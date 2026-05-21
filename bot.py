@@ -2,13 +2,16 @@ import telebot
 from PIL import Image
 import os
 from telebot import types
+import shutil
 
-TOKEN = '8298615534:AAFg2l1IKaeNPXS8KSFSHGn5TPNrMf1KfC8'
-MY_ID = '8294772962' 
+# سحب البيانات من إعدادات السيرفر
+TOKEN = os.environ.get('TOKEN')
+MY_ID = os.environ.get('MY_ID')
 
 bot = telebot.TeleBot(TOKEN)
 user_selection = {}
 
+# حذف أي ويب هوك قديم لضمان عمل البوت
 try:
     bot.delete_webhook()
 except:
@@ -16,7 +19,7 @@ except:
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    if str(message.chat.id) == MY_ID:
+    if str(message.chat.id) == str(MY_ID):
         markup = types.InlineKeyboardMarkup(row_width=2)
         markup.add(
             types.InlineKeyboardButton("JPG", callback_data="jpg"),
@@ -53,9 +56,7 @@ def handle_photo(message):
     
     try:
         if fmt == 'iso':
-            # إنشاء مجلد مؤقت للـ ISO
             os.makedirs('temp_iso', exist_ok=True)
-            import shutil
             shutil.copy(input_path, 'temp_iso/image.jpg')
             os.system("genisoimage -o output.iso temp_iso")
             
@@ -64,7 +65,6 @@ def handle_photo(message):
             os.remove('output.iso')
             shutil.rmtree('temp_iso')
         else:
-            # تحويل الصور العادية
             img = Image.open(input_path).convert('RGB')
             output_path = f'converted.{fmt}'
             img.save(output_path, fmt.upper())
