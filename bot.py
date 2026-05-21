@@ -3,13 +3,28 @@ from PIL import Image
 import os
 from telebot import types
 import shutil
+from flask import Flask  # ضفنا دي
+from threading import Thread  # ضفنا دي
 
-# البيانات اللي إنت بعتها
+# البيانات
 TOKEN = '8298615534:AAFg2l1IKaeNPXS8KSFSHGn5TPNrMf1KfC8'
 MY_ID = '8294772962'
 
 bot = telebot.TeleBot(TOKEN)
 user_selection = {}
+
+# كود المنبه عشان ريندر ما يطفيش البوت
+app = Flask('')
+@app.route('/')
+def home():
+    return "البوت يعمل الآن يا زميلي!"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
 
 try:
     bot.delete_webhook()
@@ -78,5 +93,8 @@ def handle_photo(message):
         if os.path.exists(input_path):
             os.remove(input_path)
 
-print("البوت يعمل الآن...")
-bot.polling(none_stop=True)
+# تشغيل المنبه قبل تشغيل البوت
+if __name__ == "__main__":
+    keep_alive()
+    print("البوت يعمل الآن...")
+    bot.polling(none_stop=True)
