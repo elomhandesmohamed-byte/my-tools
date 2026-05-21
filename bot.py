@@ -4,14 +4,13 @@ import os
 from telebot import types
 import shutil
 
-# سحب البيانات من إعدادات السيرفر
-TOKEN = os.environ.get('TOKEN')
-MY_ID = os.environ.get('MY_ID')
+# البيانات اللي إنت بعتها
+TOKEN = '8298615534:AAFg2l1IKaeNPXS8KSFSHGn5TPNrMf1KfC8'
+MY_ID = '8294772962'
 
 bot = telebot.TeleBot(TOKEN)
 user_selection = {}
 
-# حذف أي ويب هوك قديم لضمان عمل البوت
 try:
     bot.delete_webhook()
 except:
@@ -19,7 +18,7 @@ except:
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    if str(message.chat.id) == str(MY_ID):
+    if str(message.chat.id) == MY_ID:
         markup = types.InlineKeyboardMarkup(row_width=2)
         markup.add(
             types.InlineKeyboardButton("JPG", callback_data="jpg"),
