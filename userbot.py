@@ -1,7 +1,7 @@
 from telethon import TelegramClient, events
 
 api_id = 31959459
-api_hash = "PUT_YOUR_API_HASH_HERE"
+api_hash = "9306e35f0d6cfdf52d60d7d21660a4d9"
 
 client = TelegramClient('session', api_id, api_hash)
 
